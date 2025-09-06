@@ -4,27 +4,44 @@ import { toast } from 'react-toastify'
 
 const Create = ({ todos, settodos }) => {
   const [title, settitle] = useState("")
+  const [date, setdate] = useState("")
 
   const addTodo = () => {
-    if (!title.trim()) return
+    if (!title.trim()) {
+      toast.warn("Please enter a task!")
+      return
+    }
+    if (!date) {
+      toast.warn("Please select a date!")
+      return
+    }
+
     const newTodo = {
       id: nanoid(),
       title,
+      date,
       isCompleted: false,
     }
     settodos([...todos, newTodo])
-    toast.success("Todo added successfully!") // success toast
+    toast.success("Todo added successfully!") 
     settitle("")
+    setdate("")
   }
 
   return (
-    <div className="flex gap-3">
+    <div className="flex flex-col md:flex-row gap-3 w-full">
       <input
         type="text"
         value={title}
         onChange={(e) => settitle(e.target.value)}
         placeholder="Enter your todo..."
         className="flex-1 p-3 rounded-lg bg-gray-800 text-white placeholder-gray-400 outline-none focus:ring-2 focus:ring-indigo-500"
+      />
+      <input
+        type="date"
+        value={date}
+        onChange={(e) => setdate(e.target.value)}
+        className="p-3 rounded-lg bg-gray-800 text-white outline-none focus:ring-2 focus:ring-indigo-500"
       />
       <button
         onClick={addTodo}
